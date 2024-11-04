@@ -24,10 +24,8 @@ function useSprayCan(gangName, model, slot)
         return
     end
 
-	local identifier = ESX.PlayerData.identifier
-	local curGang = ESX.PlayerData.gang
+	local curGang = GetPlayerGang()
 
-	
 	if gangName ~= curGang then
 		ESX.ShowNotification("error", 5000 , "Where did I find this spray can..." , "SYSTEM")
 		return
@@ -72,7 +70,7 @@ function useSprayCan(gangName, model, slot)
 				sprayingParticle = nil
 				sprayingCan = nil
 
-				TriggerServerEvent('eth-gangs:server:removeServerItem', 'spraycan', 1, slot)				
+				TriggerServerEvent('eth-graffiti:removeServerItem', 'spraycan', 1, slot)				
 				TriggerServerEvent('eth-graffiti:addServerGraffiti', model, coords, rotation, gangName)
 			else
 				StopAnimTask(ped, 'switch@franklin@lamar_tagging_wall', 'lamar_tagging_exit_loop_lamar', 1.0)
@@ -98,7 +96,7 @@ RegisterNetEvent('eth-graffiti:removeClosestGraffiti', function(slot)
 	
 	local location = getLocation(coords)
 	
-	TriggerServerEvent('eth-gangs:server:notifyGangMember', gang, location, coords)
+	TriggerServerEvent('eth-graffiti:notifyGangMember', gang, location, coords)
 	
 	if lib.progressBar({
 			duration = 240 * 1000,
@@ -114,8 +112,8 @@ RegisterNetEvent('eth-graffiti:removeClosestGraffiti', function(slot)
 
 		}) then
 		ClearPedTasks(ped)
-		TriggerServerEvent('eth-gangs:server:removeServerItem', 'sprayremover', 1, slot)
-		TriggerServerEvent('eth-gangs:server:removeServerGraffitiByID', graffiti)
+		TriggerServerEvent('eth-graffiti:removeServerItem', 'sprayremover', 1, slot)
+		TriggerServerEvent('eth-graffiti:removeServerGraffitiByID', graffiti)
 	else
 		ClearPedTasks(ped)
 	end
@@ -158,10 +156,6 @@ CreateThread(function()
     end
 end)
 
-AddEventHandler('eth-graffiti:openCloset', function()
-	TriggerEvent('illenium-appearance:client:openCloset', true, 'outfit')
-end)
-
 local blipBlinking = false
 
 RegisterNetEvent('eth-graffiti:updateGraffitiBlip', function(coords)
@@ -186,27 +180,8 @@ RegisterNetEvent('eth-graffiti:updateGraffitiBlip', function(coords)
 end)
 
 
-
-RegisterNetEvent('eth-graffiti:graffitiShop', function()
-    local graffitiMenu = {}
-        for k,v in pairs(Config.Sprays) do
-			graffitiMenu[#graffitiMenu+1] = {
-				title = v.name .. ' - ' .. v.price .. '$',
-				server = true,
-				description = "",
-				icon = 'fa-solid fa-brush',
-				event = "eth-gangs:server:graffitiShop", 
-				data = { model = k, name = v.name, price = v.price, gang = v.gang },
-				distance = -1.0,
-				close = true
-			}		
-        end
-		
-		exports['ecstasy-menu']:CreateMenu(graffitiMenu, true)
-end)
-
 AddEventHandler('esx:onPlayerSpawn', function()
-	local data = lib.callback.await("eth-gangs:server:getGraffitiData", false)
+	local data = lib.callback.await("eth-graffiti:getGraffitiData", false)
 	Config.Graffitis = data
 end)
 
@@ -230,28 +205,15 @@ RegisterNetEvent('eth-graffiti:updateGraffitiData', function(id, data, bool)
     end
 end)
 
+
+
+
 AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then
         return
     end    
     
     Wait(2000)
-	local data = lib.callback.await("eth-gangs:server:getGraffitiData", false)
+	local data = lib.callback.await("eth-graffiti:getGraffitiData", false)
 	Config.Graffitis = data
-	
-   --[[ local graffitiMenu = {}
-        for k,v in pairs(Config.Sprays) do
-			graffitiMenu[#graffitiMenu+1] = {
-				title = v.name .. ' - ' .. v.price .. '$',
-				server = true,
-				description = "",
-				icon = 'fa-solid fa-brush',
-				event = "eth-gangs:server:graffitiShop", 
-				data = { model = k, name = v.name, price = v.price, gang = v.gang },
-				distance = -1.0,
-				close = true
-			}		
-        end
-		
-		exports['ecstasy-menu']:CreateMenu(graffitiMenu, true)]]
 end)

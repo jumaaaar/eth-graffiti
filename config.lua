@@ -1,5 +1,10 @@
 Config = {}
 
+Config.Ped = {
+    Model = 'a_m_m_rurmeth_01',
+    Location = vector3(109.24, -1090.58, 28.3)
+}
+
 --- GRAFITTI CONFIG
 
 Config.Graffitis = {}

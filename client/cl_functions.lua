@@ -134,6 +134,7 @@ function PlaceGraffiti(model, cb)
 
         CreateThread(function()
             while isPlacing do
+                lib.showTextUI('[E] to Spray', { position = 'left-center'})
                 local ped = PlayerPedId()
                 local hit, coords, entity = RayCastGamePlayCamera(10.0)
                 local graffiti = GetClosestGraffiti(100.0)
@@ -152,7 +153,7 @@ function PlaceGraffiti(model, cb)
                     placingObject = nil
                     isPlacing = false
                     canPlace = false
-
+                    lib.hideTextUI()
                     cb(false)
                 end
 
@@ -162,7 +163,7 @@ function PlaceGraffiti(model, cb)
                     placingObject = nil
                     isPlacing = false
                     canPlace = false
-
+                    lib.hideTextUI()
                     cb(false)
                 end
 
@@ -172,7 +173,7 @@ function PlaceGraffiti(model, cb)
                     placingObject = nil
                     isPlacing = false
                     canPlace = false
-
+                    lib.hideTextUI()
                     cb(false)
                 end
 
@@ -184,17 +185,18 @@ function PlaceGraffiti(model, cb)
                         DeleteEntity(placingObject)
                         placingObject = nil
                         isPlacing = false
-
+                        lib.hideTextUI()
                         cb(true, entityCoords, entityRotation)
                     end
 
                     if placingObject and #(GetEntityCoords(ped) - GetEntityCoords(placingObject)) > 5.0 then
+                        lib.hideTextUI()
                         canPlace = false
                     end
                 else
+                    lib.hideTextUI()
                     canPlace = false
                 end
-
                 Wait(0)
             end
         end)

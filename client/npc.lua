@@ -10,13 +10,13 @@ end)
 
 
 CreateThread(function()
-    RequestModel(GetHashKey('a_m_m_rurmeth_01'))
+    RequestModel(GetHashKey(Config.Ped.Model))
     while not HasModelLoaded(GetHashKey('a_m_m_rurmeth_01')) do
         Wait(0)
     end
 
     -- Set up the blip
-    local blip = AddBlipForCoord(vector3(109.24, -1090.58, 28.3))
+    local blip = AddBlipForCoord(Config.Ped.Location)
 
     SetBlipSprite(blip, 72)
     SetBlipDisplay(blip, 4)

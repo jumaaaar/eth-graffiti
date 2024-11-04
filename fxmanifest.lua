@@ -15,7 +15,8 @@ client_scripts{
     'config.lua',
     'client/cl_functions.lua',
     'client/npc.lua',
-    'client/main.lua'
+    'client/main.lua',
+    'client/protection.lua'
 }
 
 server_scripts{
