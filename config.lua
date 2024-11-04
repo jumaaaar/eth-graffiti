@@ -63,3 +63,22 @@ Config.ProtectionArea = {
 
 }
 
+
+
+Config.Sprays = {
+    [GetHashKey('sprays_gang1')] = {
+        name = 'Santo',
+        price = 5000,
+        blip = true,
+        blipcolor = 3,
+        gang = 'santo'
+    },
+}
+
+
+
+Config.BlipColors = {
+    santo = { color = 3},
+    geng = { color = 9},
+    geng2 = { color = 8},
+}

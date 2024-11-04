@@ -1,4 +1,19 @@
 
+local PlayerData = {gang = "none", gang_rank = "none"}
+
+RegisterNetEvent('esx:setGang')
+AddEventHandler('esx:setGang', function(gang, gang_rank)
+    PlayerData.gang = gang
+    PlayerData.gang_rank = gang_rank
+end)
+
+
+
+--- GET YOUR OWN GANG HERE
+
+function GetPlayerGang()
+    return PlayerData.gang
+end
 function fetchGraffitiData(pEntity)
 	for k, v in pairs(Config.Graffitis) do
 		if pEntity == v.entity then
@@ -85,12 +100,12 @@ function RotationToDirection(rotation)
 	return vector3(-math.sin(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)), math.cos(adjustedRotation.z) * math.abs(math.cos(adjustedRotation.x)), math.sin(adjustedRotation.x))
 end
 
-function CheckShopData(gang, PlayerData)
+function CheckShopData(gang, playerGang)
     if not gang then
         return false
     else
         if PlayerData then
-            if gang == PlayerData.name then
+            if gang == playerGang then
                 return false
             else
                 return true
@@ -99,21 +114,6 @@ function CheckShopData(gang, PlayerData)
             return true
         end
     end
-end
-
-local function gangBase(coords)
-	for k, v in pairs(GangData) do 
-
-		if v["BossActionLocation"] and k ~= "none" then
-			local distance = #(coords -  v["BossActionLocation"] )
-			
-			if distance < 50.0 then
-				return true
-			end	
-		end
-	end
-	
-	return false
 end
 
 
@@ -148,16 +148,6 @@ function PlaceGraffiti(model, cb)
                 SetRotation(placingObject)
 
                 if IsControlJustPressed(0, 177) then
-                    DeleteEntity(placingObject)
-                    placingObject = nil
-                    isPlacing = false
-                    canPlace = false
-
-                    cb(false)
-                end
-
-                if gangBase(coords) then
-                    ESX.ShowNotification("error", 5000 , 'You are near a gang base' , "SYSTEM")
                     DeleteEntity(placingObject)
                     placingObject = nil
                     isPlacing = false

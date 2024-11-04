@@ -1,6 +1,6 @@
 ESX = exports['es_extended']:getSharedObject()
 
-lib.callback.register("eth-gangs:server:getGangCounts", function(source, gang)
+lib.callback.register("eth-graffiti:getGangCounts", function(source, gang)
     return tonumber(getGangCount(gang))
 end)
 
@@ -27,59 +27,32 @@ CreateThread(function()
     end)
 end)
 
-lib.callback.register("eth-gangs:server:getGraffitiData", function(source, gang)
+lib.callback.register("eth-graffiti:getGraffitiData", function(source, gang)
     return Config.Graffitis
 end)
 
-function generateGraffitiID()
-	local id = math.random(111, 999).."-ETH-" .. math.random(111, 999)
-	
-	while Config.Graffitis[id] ~= nil do
-		id = math.random(111, 999).."-ETH-" .. math.random(111, 999)
-	end
-	
-	return id
-end
 
-local function getGraffiti(gangName)
-	for k, v in pairs(Config.Sprays) do
-		if v.gang == gangName then
-			return k, v
-		end
-	end
-	
-	return false
-end 
-
-
-RegisterServerEvent("eth-gangs:server:notifyGangMember", function(gang, location, coords)
-    local gangData = GangData[gang]
-    
-    if not gangData then 
-        return
-    end
-
+RegisterServerEvent("eth-graffiti:notifyGangMember", function(gang, location, coords)
 	local message = string.format("Homies, heads up! Our graffiti in %s is being removed. Time to rally and defend our art!", location)
-	local subject = gangData['label']
+	local subject = GetGangLabel(gang)
     local players = GetPlayers()
     for _, playerId in ipairs(players) do
         local xPlayer = ESX.GetPlayerFromId(playerId)
         local PlayerGang = GetPlayerGang(playerId)
         if PlayerGang == gang then
-            TriggerClientEvent('phone:addnotification', xPlayer.source, subject, message)
+            NotifyGangMembers(xPlayer.source, subject, message)
         end
     end
 end)
 
-RegisterServerEvent('eth-gangs:client:addServerGraffiti', function(model, coords, rotation, gang)
+RegisterServerEvent('eth-graffiti:addServerGraffiti', function(model, coords, rotation, gang)
     local src = source
     local player = ESX.GetPlayerFromId(src)
-    
+
     if player then
         local id = generateGraffitiID()
-        local gangData = GangData[gang]
 
-        if gangData then
+        if gang then
 
             local roundedCoords = vector3(tonumber(string.format("%.2f", coords.x)), tonumber(string.format("%.2f", coords.y)), tonumber(string.format("%.2f", coords.z)))
             local roundedRotation = vector3(tonumber(string.format("%.2f", rotation.x)), tonumber(string.format("%.2f", rotation.y)), tonumber(string.format("%.2f", rotation.z)))
@@ -102,14 +75,14 @@ RegisterServerEvent('eth-gangs:client:addServerGraffiti', function(model, coords
                 }
     
                 Config.Graffitis[id] = graffitiData        
-                TriggerClientEvent('eth-gangs:client:updateGraffitiData', -1, id, Config.Graffitis[id], true)
+                TriggerClientEvent('eth-graffiti:updateGraffitiData', -1, id, Config.Graffitis[id], true)
             end)
         end
     end
 end)
 
 
-RegisterServerEvent('eth-gangs:server:removeServerGraffitiByID', function(id)
+RegisterServerEvent('eth-graffiti:removeServerGraffitiByID', function(id)
     local src = source
     local Player = ESX.GetPlayerFromId(src)
 	
@@ -120,32 +93,29 @@ RegisterServerEvent('eth-gangs:server:removeServerGraffitiByID', function(id)
     }, function(response)
         if response then
             Config.Graffitis[id] = nil	
-            TriggerClientEvent('eth-gangs:client:updateGraffitiData', -1, id, {}, false)
+            TriggerClientEvent('eth-graffiti:updateGraffitiData', -1, id, {}, false)
         end
     end)
 end)
 
 
-RegisterServerEvent('eth-gangs:server:Graffitishop', function(pTarget, pContext)
+RegisterServerEvent('eth-graffiti:Graffitishop', function(data)
     local src = source
     local Player = ESX.GetPlayerFromId(src)
+
     if Player then
 		local moneyCount = exports.ox_inventory:Search(src, 'count', 'money')
-		
-		if moneyCount >= pContext.price then
-			print(pContext.gang)
-			exports.ox_inventory:RemoveItem(src, 'money', pContext.price)
-
+		if moneyCount >= data.price then
+			exports.ox_inventory:RemoveItem(src, 'money', data.price)
 			exports.ox_inventory:AddItem(src, 'spraycan', 1, {
-                model = pContext.model,
-                name = pContext.name,
-				gang = pContext.gang
+                model = data.model,
+                name = data.name,
+				gang = data.gang
             })
-			
-			Notify(src, 'success', 'You bought a graffiti can for $'..pContext.price..' with the name: '..pContext.name)		
+			--Notify(src, 'success', 'You bought a graffiti can for $'..data.price..' with the name: '..data.name)		
 		else
-            local morePrice = pContext.price - moneyCount
-			Notify(src, 'success', 'You not have enough money. You need more '..morePrice)							
+            local morePrice = data.price - moneyCount
+			--Notify(src, 'success', 'You not have enough money. You need more '..morePrice)							
 		end
     end
 end)
@@ -158,7 +128,7 @@ ESX.RegisterUsableItem('spraycan', function(source, item, info)
     local Player = ESX.GetPlayerFromId(src)
     if Player then
         if info.metadata then			
-            TriggerClientEvent('eth-gangs:client:placeGraffiti', source, info.metadata.gang, info.metadata.model, info.slot)
+            TriggerClientEvent('eth-graffiti:placeGraffiti', source, info.metadata.gang, info.metadata.model, info.slot)
         else
 			Notify(src, 'error', 'Seems like I can\'t do that at the moment...', 5000, 'red')     	       
         end
@@ -170,16 +140,12 @@ ESX.RegisterUsableItem('sprayremover', function(source, item, info)
     local Player = ESX.GetPlayerFromId(src)
 
     if Player then
-		-- if getGangCount(info.metadata.gang) < 4 then
-		-- 	return Notify(src, 'error', 'Yo, your crew’s too small for this job. Get more members!', 5000, 'red')	      
-		-- end	
-		
-        TriggerClientEvent('eth-gangs:client:removeClosestGraffiti', source, info.slot)
+        TriggerClientEvent('eth-graffiti:removeClosestGraffiti', source, info.slot)
     end
 end)
 
 
-RegisterServerEvent('eth-gangs:server:removeServerItem', function(item, amount, slot)
+RegisterServerEvent('eth-graffiti:removeServerItem', function(item, amount, slot)
     local src = source
     local Player = ESX.GetPlayerFromId(src)
 

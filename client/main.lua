@@ -1,3 +1,6 @@
+
+ESX = exports['es_extended']:getSharedObject()
+
 rotationCam = CreateCam('DEFAULT_SCRIPTED_CAMERA', 0)
 sprayingParticle = nil
 placingObject = nil
@@ -15,8 +18,6 @@ CreateThread( function()
     })
 end)
 
-
-
 function useSprayCan(gangName, model, slot)
     local ped = cache.ped
     if isPlacing then
@@ -25,7 +26,8 @@ function useSprayCan(gangName, model, slot)
 
 	local identifier = ESX.PlayerData.identifier
 	local curGang = ESX.PlayerData.gang
-	print(gangName, curGang)
+
+	
 	if gangName ~= curGang then
 		ESX.ShowNotification("error", 5000 , "Where did I find this spray can..." , "SYSTEM")
 		return
@@ -71,7 +73,7 @@ function useSprayCan(gangName, model, slot)
 				sprayingCan = nil
 
 				TriggerServerEvent('eth-gangs:server:removeServerItem', 'spraycan', 1, slot)				
-				TriggerServerEvent('eth-gangs:client:addServerGraffiti', model, coords, rotation, gangName)
+				TriggerServerEvent('eth-graffiti:addServerGraffiti', model, coords, rotation, gangName)
 			else
 				StopAnimTask(ped, 'switch@franklin@lamar_tagging_wall', 'lamar_tagging_exit_loop_lamar', 1.0)
 				StopParticleFxLooped(sprayingParticle, true)
@@ -84,11 +86,11 @@ function useSprayCan(gangName, model, slot)
 	end)	
 end
 
-RegisterNetEvent('eth-gangs:client:placeGraffiti', function(gangName, model, slot)
+RegisterNetEvent('eth-graffiti:placeGraffiti', function(gangName, model, slot)
 	useSprayCan(gangName, model, slot)
 end)
 
-RegisterNetEvent('eth-gangs:client:removeClosestGraffiti', function(slot)
+RegisterNetEvent('eth-graffiti:removeClosestGraffiti', function(slot)
     local ped = PlayerPedId()
     local graffiti, gang, coords = GetClosestGraffiti(5.0)
 	
@@ -156,13 +158,13 @@ CreateThread(function()
     end
 end)
 
-AddEventHandler('eth-gangs:client:openCloset', function()
+AddEventHandler('eth-graffiti:openCloset', function()
 	TriggerEvent('illenium-appearance:client:openCloset', true, 'outfit')
 end)
 
 local blipBlinking = false
 
-RegisterNetEvent('eth-gangs:client:updateGraffitiBlip', function(coords)
+RegisterNetEvent('eth-graffiti:updateGraffitiBlip', function(coords)
     CreateThread(function()
         local blip = AddBlipForRadius(coords, 100.0) 
         SetBlipColour(blip, 1) 
@@ -185,7 +187,7 @@ end)
 
 
 
-RegisterNetEvent('eth-gangs:client:graffitiShop', function()
+RegisterNetEvent('eth-graffiti:graffitiShop', function()
     local graffitiMenu = {}
         for k,v in pairs(Config.Sprays) do
 			graffitiMenu[#graffitiMenu+1] = {
@@ -208,7 +210,7 @@ AddEventHandler('esx:onPlayerSpawn', function()
 	Config.Graffitis = data
 end)
 
-RegisterNetEvent('eth-gangs:client:updateGraffitiData', function(id, data, bool)
+RegisterNetEvent('eth-graffiti:updateGraffitiData', function(id, data, bool)
     local graffiti = Config.Graffitis[id]
 
     if graffiti then
