@@ -23,12 +23,10 @@ end
 ---- GANG FUNCTIONS
 
 function GetPlayerGang(player)
-    -- USE SOURCE TO GET PLAYER GANG 
    return exports['eth-gangs']:SVGetPlayerGang(player)
 end
 
 function GetGangLabel(playerGangName)
-    -- CHANGE THIS ON YOUR EXPORT TO GET THE GANGS
    return exports['eth-gangs']:SVGetGangLabel(playerGangName)
 end
 
@@ -39,9 +37,7 @@ function GetGangBlipColor(playerGang)
     return 0
 end
 
-
-
 function NotifyGangMembers(source, subject, message)
-    TriggerClientEvent('phone:addnotification', source, subject, message)
+    TriggerClientEvent('eth-graffiti:Notify', source, 'inform' , 10000, message , subject)
 end
 

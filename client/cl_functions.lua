@@ -24,6 +24,20 @@ function fetchGraffitiData(pEntity)
 	return false
 end 
 
+function Notify(type,duration,msg,title)
+    lib.notify({
+        title = title,
+        description = msg,
+        duration = duration,
+        type = type
+    })
+end
+
+RegisterNetEvent('eth-graffiti:Notify', function(type,duration,msg,title)
+    Notify(type,duration,msg,'GRAFFITI')
+end)
+
+
 function GetInfo(model)
     return Config.Sprays[model]
 end

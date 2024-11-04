@@ -15,7 +15,6 @@ CreateThread(function()
         Wait(0)
     end
 
-    -- Set up the blip
     local blip = AddBlipForCoord(Config.Ped.Location)
 
     SetBlipSprite(blip, 72)

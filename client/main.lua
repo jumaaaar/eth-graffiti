@@ -27,7 +27,7 @@ function useSprayCan(gangName, model, slot)
 	local curGang = GetPlayerGang()
 
 	if gangName ~= curGang then
-		ESX.ShowNotification("error", 5000 , "Where did I find this spray can..." , "SYSTEM")
+		Notify("error", 5000 , "Where did I find this spray can..." , "SYSTEM")
 		return
 	end
 	
@@ -160,7 +160,7 @@ local blipBlinking = false
 
 RegisterNetEvent('eth-graffiti:updateGraffitiBlip', function(coords)
     CreateThread(function()
-        local blip = AddBlipForRadius(coords, 100.0) 
+        local blip = AddBlipForRadius(coords, Config.GraffitiBlipRadius) 
         SetBlipColour(blip, 1) 
 		
         local blinkInterval = 5000 -- every 5 seconds

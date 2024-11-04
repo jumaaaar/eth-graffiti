@@ -8,7 +8,7 @@ Citizen.CreateThread(function()
             local distance = #(playerCoords - area.coords)
             if distance < 0.8 then
                 waitTime = 0 
-                local graffiti, graffitiGang, graffitiCoords = GetClosestGraffiti(100.0)
+                local graffiti, graffitiGang, graffitiCoords = GetClosestGraffiti(Config.GraffitiBlipRadius)
                 
                 if graffiti then
                     local graffitiDistance = #(area.coords - graffitiCoords)

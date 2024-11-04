@@ -112,10 +112,10 @@ RegisterServerEvent('eth-graffiti:Graffitishop', function(data)
                 name = data.name,
 				gang = data.gang
             })
-			--Notify(src, 'success', 'You bought a graffiti can for $'..data.price..' with the name: '..data.name)		
+			TriggerClientEvent('eth-graffiti:Notify', src, 'success', 'You bought a graffiti can for $'..data.price..' with the name: '..data.name)		
 		else
             local morePrice = data.price - moneyCount
-			--Notify(src, 'success', 'You not have enough money. You need more '..morePrice)							
+			TriggerClientEvent('eth-graffiti:Notify', src, 'success', 'You not have enough money. You need more '..morePrice)							
 		end
     end
 end)
