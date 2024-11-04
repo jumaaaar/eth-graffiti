@@ -8,7 +8,7 @@ Config.Ped = {
 --- GRAFITTI CONFIG
 
 Config.Graffitis = {}
-
+Config.GraffitiBlipRadius = 100.0
 Config.BlacklistedZones = {
     {coords = vector3(455.81, -997.04, 43.69), radius = 200.0}, -- Police
     {coords = vector3(324.76, -585.72, 59.15), radius = 300.0}, -- Hospital
