@@ -3,6 +3,11 @@ A unique gang-based spray paint system that allows players to showcase their gan
 
 Special thanks to kalajiqta for the original inspiration fromt [qb-graffiti](https://github.com/Kalajiqta/qb-graffiti)
 
+# Requirements
+* [ox_lib](https://github.com/overextended/ox_lib)
+* [ox_inventory](https://github.com/overextended/ox_inventory)
+* [eth-gangs](https://github.com/jumaaaar/eth-gangs)
+
 # Features
 * OX-Ready Integration: Compatible with OX targeting, inventory, and menu systems.
 * Gang-Restricted Spraypaint: Spraypaint can only be used if it belongs to your gang, ensuring only authorized members can mark territory.
@@ -17,4 +22,4 @@ Use these exports to integrate and extend functionality within your existing scr
 * exports['eth-graffiti']:GetClosestGraffiti(radius)
 -- Returns: sprayId, gang, closest graffiti
 
-# (SHOWCASE)[https://youtu.be/3MfrgI7eHgY]
+# [SHOWCASE](https://youtu.be/3MfrgI7eHgY)
