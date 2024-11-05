@@ -6,7 +6,7 @@ Special thanks to kalajiqta for the original inspiration fromt [qb-graffiti](htt
 # Requirements
 * [ox_lib](https://github.com/overextended/ox_lib)
 * [ox_inventory](https://github.com/overextended/ox_inventory)
-* [eth-gangs](https://github.com/jumaaaar/eth-gangs)
+* [eth-gangs](https://github.com/jumaaaar/eth-gangs)(You can use your own gang script)
 
 # Features
 * OX-Ready Integration: Compatible with OX targeting, inventory, and menu systems.
