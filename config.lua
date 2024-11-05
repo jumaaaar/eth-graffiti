@@ -2,7 +2,8 @@ Config = {}
 
 Config.Ped = {
     Model = 'a_m_m_rurmeth_01',
-    Location = vector3(109.24, -1090.58, 28.3)
+    Location = vector3(109.24, -1090.58, 28.3),
+    Heading = 347.5
 }
 
 --- GRAFITTI CONFIG
@@ -71,14 +72,35 @@ Config.ProtectionArea = {
 }
 
 
-
+--- NIL MEANS OPEN FOR ALL
 Config.Sprays = {
     [GetHashKey('sprays_gang1')] = {
-        name = 'Santo',
+        name = 'Santo Spray',
         price = 5000,
         blip = true,
         blipcolor = 3,
         gang = 'santo'
+    },
+    [GetHashKey('sprays_gang2')] = {
+        name = 'Gang2',
+        price = 5000,
+        blip = true,
+        blipcolor = 3,
+        gang = nil
+    },
+    [GetHashKey('sprays_gang3')] = {
+        name = 'Gang3',
+        price = 5000,
+        blip = true,
+        blipcolor = 3,
+        gang = nil
+    },
+    [GetHashKey('sprays_gang3')] = {
+        name = 'Gang4',
+        price = 5000,
+        blip = true,
+        blipcolor = 3,
+        gang = nil
     },
 }
 

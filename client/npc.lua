@@ -11,7 +11,7 @@ end)
 
 CreateThread(function()
     RequestModel(GetHashKey(Config.Ped.Model))
-    while not HasModelLoaded(GetHashKey('a_m_m_rurmeth_01')) do
+    while not HasModelLoaded(GetHashKey(Config.Ped.Model)) do
         Wait(0)
     end
 
@@ -28,7 +28,7 @@ CreateThread(function()
     EndTextCommandSetBlipName(blip)
 
     -- Create the NPC
-    local npc = CreatePed(4, GetHashKey('a_m_m_rurmeth_01'), vector3(109.24, -1090.58, 28.3), 347.5, false, false)
+    local npc = CreatePed(4, GetHashKey(Config.Ped.Model), Config.Ped.Location, Config.Ped.Heading, false, false)
     
     SetPedFleeAttributes(npc, 0, 0)
     SetEntityInvincible(npc , true)
