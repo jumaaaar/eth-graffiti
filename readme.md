@@ -16,8 +16,11 @@ Special thanks to kalajiqta for the original inspiration fromt [qb-graffiti](htt
 * Protection Rewards: Gangs can claim rewards from stores under their control. Rewards are exclusive to gang-controlled areas, creating an incentive to capture and defend territories.
 * Spray Removal Alerts: If a rival gang attempts to remove your gang’s spray, your gang receives a notification, allowing you to defend your territory actively.
 
-# Export
+# Installation
+* ensure to have spray-props to server.cfg
+* ensure to add eth-graffiti to you server.cfg
 
+# Export
 Use these exports to integrate and extend functionality within your existing scripts:
 * exports['eth-graffiti']:GetClosestGraffiti(radius)
 -- Returns: sprayId, gang, closest graffiti
