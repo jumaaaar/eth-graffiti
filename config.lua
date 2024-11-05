@@ -72,7 +72,6 @@ Config.ProtectionArea = {
 }
 
 
---- NIL MEANS OPEN FOR ALL
 Config.Sprays = {
     [GetHashKey('sprays_gang1')] = {
         name = 'Santo Spray',
@@ -86,21 +85,21 @@ Config.Sprays = {
         price = 5000,
         blip = true,
         blipcolor = 3,
-        gang = nil
+        gang = "gang2"
     },
     [GetHashKey('sprays_gang3')] = {
         name = 'Gang3',
         price = 5000,
         blip = true,
         blipcolor = 3,
-        gang = nil
+        gang = "gang3"
     },
-    [GetHashKey('sprays_gang3')] = {
+    [GetHashKey('sprays_gang4')] = {
         name = 'Gang4',
         price = 5000,
         blip = true,
         blipcolor = 3,
-        gang = nil
+        gang = "gang4"
     },
 }
 
