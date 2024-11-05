@@ -18,6 +18,8 @@ Config.BlacklistedZones = {
 
 
 
+Config.EnableProtectionRewards = true
+
 Config.ProtectionArea = {
 
     --- TWENTT FOUR SEVENS ---
